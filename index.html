@@ -1,27 +1,32 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ja">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rock-Paper-Scissors</title>
+    <title>AIとじゃんけん</title>
+    <script>
+        async function play(playerChoice) {
+            const response = await fetch("/play", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ player: playerChoice })
+            });
+            const result = await response.json();
+            document.getElementById("result").innerText = `
+                あなた: ${result.player}
+                AI: ${result.ai}
+                結果: ${result.result}
+            `;
+        }
+    </script>
 </head>
 <body>
-    <h1>Rock-Paper-Scissors</h1>
-    <form method="post">
-        <label for="choice">Choose:</label>
-        <select name="choice" id="choice" required>
-            <option value="Rock">Rock</option>
-            <option value="Paper">Paper</option>
-            <option value="Scissors">Scissors</option>
-        </select>
-        <button type="submit">Play</button>
-    </form>
-
-    {% if result %}
-        <h2>Result</h2>
-        <p>You chose: {{ user_choice }}</p>
-        <p>AI chose: {{ ai_choice }}</p>
-        <p>Outcome: {{ result }}</p>
-    {% endif %}
+    <h1>AIとじゃんけん</h1>
+    <button onclick="play('グー')">グー</button>
+    <button onclick="play('チョキ')">チョキ</button>
+    <button onclick="play('パー')">パー</button>
+    <p id="result"></p>
 </body>
 </html>
